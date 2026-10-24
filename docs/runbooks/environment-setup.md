@@ -23,4 +23,4 @@ production is created at the pilot (ADR 0001) by repeating these steps with the 
 9. Create the GitHub environment `staging` (`production`, with required reviewers, comes at the pilot).
 10. Run **Deploy staging** from Actions. Check that the alias verification passes, the site loads,
     and `ping` responds for an owner.
-11. Record the checks from ADR 0001 "Verification" in the PR that marks the ADR Accepted.
+11. Record the checks from ADR 0001 "Verification" in the PR that adds the staging project config.
