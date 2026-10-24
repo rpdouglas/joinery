@@ -3,7 +3,7 @@
 These steps are one-way or touch billing. Agents must not run them. Staging is created now;
 production is created at the pilot (ADR 0001) by repeating these steps with the `PROD` names.
 
-1. **Accept ADR 0001.**
+1. ADR 0001 is accepted (2026-10-24). Re-read its Decision table before starting.
 2. In **Lily Pad's Google Cloud organization**, create project `joinery-staging` (if the ID is taken,
    use `artisan-joinery-staging` and update `.firebaserc`, `deploy-staging.yml` and ADR 0001 in one PR).
    Add it to Firebase. Confirm at least two Lily Pad accounts hold Owner.

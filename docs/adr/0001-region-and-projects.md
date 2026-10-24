@@ -1,6 +1,6 @@
 # 0001. Data region (Montréal) and Firebase project creation
 
-- **Status:** Proposed
+- **Status:** Accepted (2026-10-24)
 - **Date:** 2026-10-24 (revised after owner review, same day)
 - **Deciders:** Owner (@rpdouglas), Lily Pad
 - **Stack reference:** `docs/architecture/stack.md` §1, §2

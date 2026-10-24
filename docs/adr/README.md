@@ -6,12 +6,12 @@ Agents draft ADRs as **Proposed**; only the owner marks them Accepted. Nothing t
 
 ## Index
 
-| #                                       | Title                                                                         | Status             | Needed before                 |
-| --------------------------------------- | ----------------------------------------------------------------------------- | ------------------ | ----------------------------- |
-| [0001](0001-region-and-projects.md)     | Data region (Montréal), ownership and project creation                        | Proposed (revised) | Creating any Firebase project |
-| [0002](0002-runtime-pins.md)            | React, TypeScript, Vite and Node pins                                         | Proposed           | Merging the scaffold          |
-| [0003](0003-identity.md)                | Identity: invite-only sign-in, roles, trade-partner links, installer `visits` | Proposed (draft)   | Any sign-in or rules work     |
-| [0004](0004-delivery-and-exceptions.md) | Delivery: staging, WIF, GA4, Sentry, offline, Biome class sorting             | Proposed           | First deploy                  |
+| #                                       | Title                                                                         | Status           | Needed before                 |
+| --------------------------------------- | ----------------------------------------------------------------------------- | ---------------- | ----------------------------- |
+| [0001](0001-region-and-projects.md)     | Data region (Montréal), ownership and project creation                        | Accepted         | Creating any Firebase project |
+| [0002](0002-runtime-pins.md)            | React, TypeScript, Vite and Node pins                                         | Proposed         | Merging the scaffold          |
+| [0003](0003-identity.md)                | Identity: invite-only sign-in, roles, trade-partner links, installer `visits` | Proposed (draft) | Any sign-in or rules work     |
+| [0004](0004-delivery-and-exceptions.md) | Delivery: staging, WIF, GA4, Sentry, offline, Biome class sorting             | Proposed         | First deploy                  |
 
 ## Planned (stack §8, in build order)
 
