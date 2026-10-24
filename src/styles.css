@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Placeholder values until the Joinery design-system tokens land;
+ * replace them here and nowhere else. Fonts are system stacks until the font ADR
+ * (self-hosted Bitter, Karla, IBM Plex Mono) is accepted.
+ */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-surface: #f8f6f1;
+  --color-ink: #1f2420;
+  --color-muted: #5c645e;
+  --color-brand: #3f5b4a;
+  --color-brand-contrast: #f4efe6;
+}
+
+@layer base {
+  body {
+    @apply bg-surface font-sans text-ink antialiased;
+  }
+}

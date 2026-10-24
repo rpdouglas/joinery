@@ -1,0 +1,10 @@
+# Owners review everything by default. Security-sensitive paths are listed explicitly
+# so they stay owned if the default changes.
+*                       @rpdouglas
+firestore.rules         @rpdouglas
+storage.rules           @rpdouglas
+firebase.json           @rpdouglas
+.firebaserc             @rpdouglas
+.github/                @rpdouglas
+functions/              @rpdouglas
+docs/adr/               @rpdouglas

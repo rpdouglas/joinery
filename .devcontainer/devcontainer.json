@@ -1,0 +1,32 @@
+{
+  "name": "Joinery",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": { "version": "21" }
+  },
+  "forwardPorts": [5173, 4000, 5000, 5001, 8080, 9099, 9199],
+  "portsAttributes": {
+    "5173": { "label": "Vite" },
+    "4000": { "label": "Emulator UI" }
+  },
+  "postCreateCommand": "npm ci && npx playwright install --with-deps chromium",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "bradlc.vscode-tailwindcss",
+        "toba.vsfire",
+        "ms-playwright.playwright",
+        "vitest.explorer"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "biomejs.biome",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports.biome": "explicit",
+          "source.fixAll.biome": "explicit"
+        }
+      }
+    }
+  }
+}

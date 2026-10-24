@@ -1,0 +1,68 @@
+{
+  "name": "joinery",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "workspaces": [
+    "functions"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b && npm run typecheck -w functions",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "vitest run && npm test -w functions",
+    "test:watch": "vitest",
+    "test:rules": "firebase emulators:exec --only firestore,storage --project demo-joinery \"vitest run --config vitest.rules.config.ts\"",
+    "test:e2e": "playwright test",
+    "emulators": "firebase emulators:start --project demo-joinery",
+    "size": "node scripts/check-bundle-size.mjs",
+    "verify:alias": "node scripts/verify-firebase-alias.mjs",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc,css}": "biome check --write --no-errors-on-unmatched"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@biomejs/biome": "2.6.3",
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
+    "@firebase/rules-unit-testing": "6.0.0",
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/vite": "4.3.3",
+    "@tanstack/router-plugin": "1.168.48",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "firebase-tools": "15.34.1",
+    "husky": "9.1.7",
+    "jsdom": "30.1.3",
+    "lint-staged": "17.6.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "5.9.2",
+    "@tanstack/react-query": "5.104.5",
+    "@tanstack/react-router": "1.170.46",
+    "firebase": "13.1.0",
+    "lucide-react": "1.61.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-hook-form": "7.91.0",
+    "zod": "4.6.7",
+    "zustand": "5.0.16"
+  }
+}
