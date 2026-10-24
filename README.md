@@ -10,8 +10,8 @@ Identity Platform) in `northamerica-northeast1`. Details: [docs/architecture/sta
 ## Quick start
 
 ```bash
-nvm use            # Node 24 (22.12+ works for the app)
-npm ci
+nvm use            # Node 24 (ships npm 11, needed for the lockfiles)
+npm ci && npm ci --prefix functions
 cp .env.example .env.local
 npm run emulators  # terminal 1 (needs Java 21)
 npm run dev        # terminal 2 → http://localhost:5173

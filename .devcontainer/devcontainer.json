@@ -9,7 +9,7 @@
     "5173": { "label": "Vite" },
     "4000": { "label": "Emulator UI" }
   },
-  "postCreateCommand": "npm ci && npx playwright install --with-deps chromium",
+  "postCreateCommand": "npm ci && npm ci --prefix functions && npx playwright install --with-deps chromium",
   "customizations": {
     "vscode": {
       "extensions": [

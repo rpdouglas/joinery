@@ -15,7 +15,7 @@ function RootLayout() {
     <div className="min-h-dvh">
       <header className="bg-brand text-brand-contrast">
         <nav className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
-          <Link to="/" className="font-serif text-lg font-semibold">
+          <Link to="/" className="font-semibold font-serif text-lg">
             Joinery
           </Link>
         </nav>

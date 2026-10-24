@@ -9,3 +9,4 @@ fi
 
 cd "$CLAUDE_PROJECT_DIR"
 npm ci --no-audit --no-fund
+npm ci --prefix functions --no-audit --no-fund

@@ -33,7 +33,7 @@
       "preset": "recommended",
       "a11y": "error",
       "nursery": {
-        "useTailwindSortedClasses": { "level": "warn", "fix": "safe" }
+        "useSortedClasses": { "level": "warn", "fix": "safe" }
       }
     }
   }
