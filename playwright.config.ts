@@ -1,6 +1,9 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const port = 4173
+// Bind and probe the same IPv4 address: `localhost` resolves to ::1 on GitHub runners,
+// so a server on localhost refuses the browser's 127.0.0.1 requests.
+const baseURL = `http://127.0.0.1:${port}`
 
 export default defineConfig({
   testDir: 'e2e',
@@ -8,14 +11,14 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
-  use: { baseURL: `http://127.0.0.1:${port}`, trace: 'on-first-retry' },
+  use: { baseURL, trace: 'on-first-retry' },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'mobile', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
-    command: `npm run build && npm run preview -- --port ${port} --strictPort`,
-    port,
+    command: `npm run build && npm run preview -- --host 127.0.0.1 --port ${port} --strictPort`,
+    url: baseURL,
     reuseExistingServer: !process.env.CI,
   },
 })
