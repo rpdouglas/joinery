@@ -12,5 +12,5 @@
 | Review the stack review and accept or amend ADR 0002                                                                      | Owner  | To do                |
 | Answer §9 open items (QuickBooks product, DNS, French-first items)                                                        | Owner  | To do                |
 | Add `lilypad-standard-stack.md` and the two feature specs to `docs/`                                                      | Owner  | To do                |
-| Enable branch protection on `main` (CI required, CODEOWNERS review)                                                       | Owner  | To do                |
+| Enable branch protection on `main`: require only the "CI passed" check, plus CODEOWNERS review                            | Owner  | To do                |
 | Install the Renovate GitHub App                                                                                           | Owner  | To do                |

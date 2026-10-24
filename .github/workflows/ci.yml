@@ -7,14 +7,30 @@ on:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Cancel superseded PR runs; let every commit on main finish so each merge has a result.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
 
 jobs:
-  check:
-    name: Lint, typecheck, unit tests, build
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: filter
+        run: scripts/ci-changes.sh "$BASE" "$HEAD"
+        env:
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
+  lint:
+    name: Lint and format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -24,6 +40,19 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+
+  check:
+    name: Typecheck, unit tests, build
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
@@ -34,6 +63,8 @@ jobs:
 
   rules:
     name: Security rules tests (emulator)
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -50,6 +81,8 @@ jobs:
 
   e2e:
     name: Playwright + axe
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -66,3 +99,20 @@ jobs:
           name: playwright-report
           path: playwright-report
           retention-days: 7
+
+  # The one check to require in branch protection. Skipped jobs (docs-only changes) count as
+  # passing; a failed or cancelled job, including change detection, fails it.
+  ci-passed:
+    name: CI passed
+    if: always()
+    needs: [changes, lint, check, rules, e2e]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check job results
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Job results: $RESULTS"
+          for r in $RESULTS; do
+            if [[ "$r" == "failure" || "$r" == "cancelled" ]]; then exit 1; fi
+          done
