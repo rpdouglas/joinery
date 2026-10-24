@@ -3,6 +3,7 @@
   "permissions": {
     "allow": [
       "Bash(npm ci)",
+      "Bash(npm ci --prefix functions)",
       "Bash(npm install)",
       "Bash(npm run dev)",
       "Bash(npm run lint)",
@@ -12,9 +13,8 @@
       "Bash(npm run test:*)",
       "Bash(npm run build)",
       "Bash(npm run size)",
+      "Bash(npm run build:functions)",
       "Bash(npm run emulators)",
-      "Bash(npm run build -w functions)",
-      "Bash(npm test -w functions)",
       "Bash(npx biome:*)",
       "Bash(npx vitest:*)",
       "Bash(npx playwright test:*)",
@@ -38,7 +38,10 @@
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh" }
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh"
+          }
         ]
       }
     ]

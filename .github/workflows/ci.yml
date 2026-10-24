@@ -53,13 +53,14 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - run: npm ci --prefix functions
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
         env:
           VITE_RELEASE_ID: ${{ github.sha }}
       - run: npm run size
-      - run: npm run build -w functions
+      - run: npm run build:functions
 
   rules:
     name: Security rules tests (emulator)

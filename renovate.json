@@ -5,14 +5,23 @@
   "schedule": ["before 6am on monday"],
   "minimumReleaseAge": "14 days",
   "rangeStrategy": "pin",
-  "lockFileMaintenance": { "enabled": true, "schedule": ["before 6am on monday"] },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
   "packageRules": [
-    { "matchUpdateTypes": ["major"], "dependencyDashboardApproval": true },
+    {
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
     {
       "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
       "groupName": "react"
     },
-    { "matchPackageNames": ["/^@tanstack\\//"], "groupName": "tanstack" },
+    {
+      "matchPackageNames": ["/^@tanstack\\//"],
+      "groupName": "tanstack"
+    },
     {
       "matchPackageNames": [
         "firebase",
@@ -23,6 +32,18 @@
       ],
       "groupName": "firebase"
     },
-    { "matchPackageNames": ["vitest", "/^@vitest\\//"], "groupName": "vitest" }
-  ]
+    {
+      "matchPackageNames": ["vitest", "/^@vitest\\//"],
+      "groupName": "vitest"
+    },
+    {
+      "matchPackageNames": ["zod"],
+      "groupName": "zod"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": null,
+    "labels": ["security"]
+  }
 }

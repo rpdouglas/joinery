@@ -16,6 +16,9 @@ Ordered. Pull the top items into `ACTIVE_CYCLE.md`.
 - `npm audit` (2026-10-24): high-severity `@grpc/grpc-js` advisory arrives via `firebase` 13.1.0 → `@firebase/firestore`; no non-breaking fix. Track the Firebase release; do not `audit fix --force`.
 - PR preview channels on staging.
 
+- **2026-11-04:** merge Renovate's Biome 2.6.x PR (restores Markdown/YAML checks; run `biome migrate` for the
+  `useTailwindSortedClasses` rename and accept the class-order changes). See ADR 0002.
+
 ## Later
 
 - Production project, protected `production` environment, PITR, weekly backups, restore drill.
