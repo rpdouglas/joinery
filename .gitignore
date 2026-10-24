@@ -1,0 +1,27 @@
+node_modules/
+dist/
+functions/lib/
+coverage/
+playwright-report/
+test-results/
+blob-report/
+*.tsbuildinfo
+
+# Firebase
+.firebase/
+*-debug.log
+firebase-debug.*.log
+ui-debug.log
+emulator-data/
+
+# Env and secrets
+.env
+.env.*
+!.env.example
+*.pem
+service-account*.json
+
+# Claude Code local overrides
+.claude/settings.local.json
+
+.DS_Store

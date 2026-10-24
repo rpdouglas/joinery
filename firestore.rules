@@ -1,0 +1,32 @@
+rules_version = '2';
+
+// Deny by default. Access is by role claim only; staff at both locations share
+// data at the role level (see docs/architecture/stack.md, "Location access").
+// Rules cannot hide single fields: restricted data lives in separate documents.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function role() {
+      return signedIn() ? request.auth.token.get('role', '') : '';
+    }
+    function isStaff() {
+      return role() in ['owner', 'designer'];
+    }
+    function isOwner() {
+      return role() == 'owner';
+    }
+
+    // Placeholder collection proving the pattern; replace as features land.
+    match /healthchecks/{id} {
+      allow read: if isStaff();
+      allow write: if isOwner();
+    }
+
+    // Everything else is closed until a rule is written and tested.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

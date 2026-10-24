@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "demo-joinery",
+    "staging": "joinery-staging",
+    "prod": "joinery-prod"
+  }
+}
