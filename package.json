@@ -3,12 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@12.12.1",
   "engines": {
-    "node": ">=24"
+    "node": ">=24",
+    "pnpm": "12.12.1"
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b && tsc -p functions",
     "lint": "biome check .",
@@ -21,7 +23,7 @@
     "size": "node scripts/check-bundle-size.mjs",
     "verify:alias": "node scripts/verify-firebase-alias.mjs",
     "prepare": "husky",
-    "build:functions": "npm --prefix functions run build"
+    "build:functions": "pnpm --dir functions run build"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,jsonc,css,md,yml,yaml}": "biome check --write --no-errors-on-unmatched"
@@ -63,10 +65,5 @@
     "react-hook-form": "7.89.0",
     "zod": "4.6.6",
     "zustand": "5.0.15"
-  },
-  "allowScripts": {
-    "@firebase/util": false,
-    "protobufjs": false,
-    "re2": false
   }
 }

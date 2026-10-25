@@ -21,11 +21,13 @@ beforeEach(() => env.clearFirestore())
 afterAll(() => env.cleanup())
 
 describe('default deny', () => {
+  // Catches: a catch-all allow, or a new collection shipped without its own rule.
   it('blocks unknown collections even for owners', async () => {
     const db = env.authenticatedContext('o1', { role: 'owner' }).firestore()
     await assertFails(getDoc(doc(db, 'anything/x')))
   })
 
+  // Catches: data readable without signing in.
   it('blocks signed-out users', async () => {
     const db = env.unauthenticatedContext().firestore()
     await assertFails(getDoc(doc(db, 'healthchecks/x')))
@@ -33,6 +35,7 @@ describe('default deny', () => {
 })
 
 describe('healthchecks', () => {
+  // Catches: a designer gaining owner-only write access.
   it('lets staff read and only owners write', async () => {
     const designer = env.authenticatedContext('d1', { role: 'designer' }).firestore()
     const owner = env.authenticatedContext('o1', { role: 'owner' }).firestore()
@@ -41,6 +44,7 @@ describe('healthchecks', () => {
     await assertSucceeds(setDoc(doc(owner, 'healthchecks/x'), { ok: true }))
   })
 
+  // Catches: restricted roles (installer, trade partner) reading staff data.
   it('denies installers and trade partners', async () => {
     const installer = env.authenticatedContext('i1', { role: 'installer' }).firestore()
     const partner = env.authenticatedContext('t1', { role: 'tradePartner' }).firestore()

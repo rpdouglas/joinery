@@ -1,0 +1,11 @@
+# pnpm settings for the Functions package (single package, not a workspace). See ADR 0002.
+saveExact: true
+minimumReleaseAge: 20160
+minimumReleaseAgeExclude:
+  - zod@4.6.6 # GHSA-mrhx-c7xc-m3w5
+  - body-parser@2.4.0 # GHSA-27r3-jxmh-p828, via firebase-functions > express
+  - qs@6.16.1 # required by body-parser@2.4.0
+allowBuilds:
+  "@firebase/util": false
+  protobufjs: false
+  esbuild: false

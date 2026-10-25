@@ -1,4 +1,4 @@
-// Fails if the JS loaded on first paint exceeds the budget (gzip). Run after `npm run build`.
+// Fails if the JS loaded on first paint exceeds the budget (gzip). Run after `pnpm run build`.
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'

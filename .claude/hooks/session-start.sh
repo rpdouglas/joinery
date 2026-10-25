@@ -8,5 +8,5 @@ if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
 fi
 
 cd "$CLAUDE_PROJECT_DIR"
-npm ci --no-audit --no-fund
-npm ci --prefix functions --no-audit --no-fund
+pnpm install --frozen-lockfile
+pnpm --dir functions install --frozen-lockfile
