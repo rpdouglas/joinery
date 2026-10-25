@@ -9,9 +9,10 @@ Agents draft ADRs as **Proposed**; only the owner marks them Accepted. Nothing t
 | #                                       | Title                                                                         | Status           | Needed before                 |
 | --------------------------------------- | ----------------------------------------------------------------------------- | ---------------- | ----------------------------- |
 | [0001](0001-region-and-projects.md)     | Data region (Montréal), ownership and project creation                        | Accepted         | Creating any Firebase project |
-| [0002](0002-runtime-pins.md)            | Dependency pins, Node 24 and the Functions package | Accepted           | Next dependency change        |
+| [0002](0002-runtime-pins.md)            | Dependency pins, Node 24 and the Functions package | Accepted; amendment 1 (pnpm) Proposed | Next dependency change        |
 | [0003](0003-identity.md)                | Identity: invite-only sign-in, roles, trade-partner links, installer `visits` | Proposed (draft) | Any sign-in or rules work     |
 | [0004](0004-delivery-and-exceptions.md) | Delivery: staging, WIF, GA4, Sentry, offline, Biome class sorting             | Proposed         | First deploy                  |
+| [0005](0005-branch-protection-solo.md) | Branch protection: solo-developer exception | Proposed | Enabling branch protection |
 
 ## Planned (stack §8, in build order)
 

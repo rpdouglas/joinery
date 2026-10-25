@@ -13,7 +13,7 @@ description: Draft a new Architecture Decision Record for Joinery. Use when a ta
    - **Status:** `Proposed`. Never mark an ADR Accepted yourself; the owner does that.
    - **Context:** the forces, quoting the relevant line of `docs/architecture/stack.md` and specs.
    - **Options:** at least two real options, including "do nothing / defer" where it is viable.
-   - **Decision:** the recommendation and the exact versions to pin (check `npm view <pkg> version`).
+   - **Decision:** the recommendation and the exact versions to pin (newest release at least 14 days old: check `pnpm view <pkg> time`).
    - **Consequences:** bundle-size impact, data residency, security rules, tests to add, rollback.
    - **Verification:** the commands or spikes that will prove it before acceptance.
 4. Add a row to the index table in `docs/adr/README.md` and remove it from "Planned" if listed.

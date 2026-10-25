@@ -1,6 +1,6 @@
 # 0002. Dependency pins, Node 24 and the Functions package
 
-- **Status:** Accepted (2026-10-24)
+- **Status:** Accepted (2026-10-24). Amendment 1 (pnpm, Lily Pad standard): Proposed (2026-10-25)
 - **Date:** 2026-10-24 (revised after owner review, same day)
 - **Deciders:** Owner (@rpdouglas), Lily Pad
 - **Stack reference:** `docs/architecture/stack.md` §3, §5, §7
@@ -111,3 +111,57 @@ Functions), `npm run build`, `npm run size` (99.5 KB gzip), `npm run build:funct
 `npm run test:rules` and `npm run test:e2e`. `npm audit --omit=dev`: Functions clean; app only the
 known `@grpc/grpc-js` advisory via `firebase`. A Node 24 deploy is confirmed when staging is created
 (ADR 0001).
+
+## Amendment 1: Lily Pad standard alignment (2026-10-25, Proposed)
+
+The Lily Pad standard (`docs/architecture/lilypad-standard-stack.md`) was added after this ADR was
+accepted. Reconciliation (`docs/reviews/2026-10-25-standard-reconciliation.md`) changes the following.
+Everything not listed stands.
+
+**pnpm replaces npm** (standard §1: "pnpm, single package, no workspaces"). Supersedes the npm 11,
+`npm ci` and `allowScripts` parts of decisions 2–4.
+
+- `packageManager: pnpm@12.12.1` in both `package.json` files (newest pnpm at least 14 days old);
+  Corepack provides it. `engines.pnpm` is set too, which the Cloud Functions Node buildpack reads.
+- Root and `functions/` each have their own `pnpm-lock.yaml`; neither is a workspace. Install:
+  `pnpm install --frozen-lockfile && pnpm --dir functions install --frozen-lockfile`.
+- pnpm 12 reads settings only from `pnpm-workspace.yaml`, so each package has one **without** a
+  `packages:` list (settings only, still a single package):
+  - `minimumReleaseAge: 20160` enforces the 14-day rule at install time, for every resolution
+    including transitive dependencies and manual `pnpm add`.
+  - `minimumReleaseAgeExclude` holds the named security exceptions, version-specific. Each is
+    removed once it is 14 days old:
+
+    | Package | Package file | Fixes | Turns 14 days |
+    |---|---|---|---|
+    | `zod@4.6.6` | both | GHSA-mrhx-c7xc-m3w5 (high) | 2026-10-25 |
+    | `fast-uri@3.1.9` | root (via `ajv`) | GHSA-w74x-v6f9-j3xg and three others (moderate/low) | 2026-11-02 |
+    | `body-parser@2.4.0` | functions (via `firebase-functions` > `express`) | GHSA-27r3-jxmh-p828 (high) | 2026-11-05 |
+    | `qs@6.16.1` | functions | Required by `body-parser@2.4.0` | 2026-10-28 |
+
+  - **Trade-off found:** pnpm applies the age rule to transitive dependencies too, so it resolved
+    *older, vulnerable* versions where the fix is newer than 14 days (npm's lockfile had picked the
+    newest). Every lockfile change must therefore be followed by `pnpm audit --prod`, and a high or
+    critical finding with a fix gets a named exception here. The CI dependency-audit step (backlog)
+    makes this automatic.
+  - `allowBuilds` denies the reviewed build scripts (`@firebase/util`, `protobufjs`, `re2`,
+    `esbuild`); an unreviewed build script fails the install.
+  - `saveExact: true` replaces `.npmrc` `save-exact`.
+- **Verify at staging:** Google's Node buildpack runs pnpm when `pnpm-lock.yaml` is present; this
+  was not confirmed specifically for `firebase deploy`. If the first staging Functions deploy fails
+  on it, fall back to a generated `package-lock.json` for `functions/` only and record it here.
+
+**`exactOptionalPropertyTypes` result** (standard §2 asks for an ADR record): enabled. The app,
+Functions and tests typecheck cleanly with it on TypeScript 7.0.2, Firebase 13 and React Hook
+Form 7.89. If a library's typings later clash, turn it off in that `tsconfig` and amend this ADR.
+`noImplicitOverride` is also on (standard baseline).
+
+**`shared/` location** (deviation from standard §9/§16, which name `src/features/<feature>/schemas`
+or `functions/shared`). Kept as a root `shared/` folder, imported by the app (`@shared/*`) and
+inlined into Functions by esbuild. Reason: each package resolves its own `zod`; a
+`functions/shared` folder imported by the app would pull `zod` from `functions/node_modules` and
+risk two copies in the app. App-only schemas still go in `src/features/<feature>/schemas`.
+
+**Typecheck and build are separate** (standard §2): `build` is now `vite build` only; `typecheck`
+is its own script and its own CI step.
+

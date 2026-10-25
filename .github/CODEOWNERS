@@ -2,6 +2,7 @@
 # so they stay owned if the default changes.
 *                       @rpdouglas
 firestore.rules         @rpdouglas
+firestore.indexes.json  @rpdouglas
 storage.rules           @rpdouglas
 firebase.json           @rpdouglas
 .firebaserc             @rpdouglas

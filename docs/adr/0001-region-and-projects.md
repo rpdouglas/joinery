@@ -81,7 +81,7 @@ privacy notice with the other non-regional services.
 
 ## Verification
 
-Follow `docs/runbooks/environment-setup.md` for staging. Confirm: Firestore shows
+Follow `docs/runbooks/environments.md` for staging. Confirm: Firestore shows
 `northamerica-northeast1` and Standard edition; the default bucket is in `northamerica-northeast1`;
 `_Default` routes to the regional log bucket; the budget alert exists; `ping` deploys and answers
 the staging app.

@@ -8,7 +8,7 @@
 
 ## Checks
 
-- [ ] `npm run lint && npm run typecheck && npm test` pass locally
+- [ ] `pnpm run lint && pnpm run typecheck && pnpm test` pass locally
 - [ ] Security rules changed → rules tests added in `tests/rules/`
 - [ ] UI changed → keyboard and screen-reader pass; Playwright + axe still green
 - [ ] Docs updated (`docs/`, `CLAUDE.md`/`AGENTS.md` if conventions changed)
