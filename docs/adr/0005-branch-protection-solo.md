@@ -1,6 +1,6 @@
 # 0005. Branch protection: solo-developer exception
 
-- **Status:** Proposed
+- **Status:** Accepted (2026-10-28)
 - **Date:** 2026-10-25
 - **Deciders:** Owner (@rpdouglas), Lily Pad
 - **Exception to:** Lily Pad standard §7 ("1 human approval" on PRs to `main`)

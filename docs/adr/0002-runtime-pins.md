@@ -1,6 +1,6 @@
 # 0002. Dependency pins, Node 24 and the Functions package
 
-- **Status:** Accepted (2026-10-24). Amendment 1 (pnpm, Lily Pad standard): Proposed (2026-10-25)
+- **Status:** Accepted (2026-10-24). Amendment 1 (pnpm, Lily Pad standard): Accepted (2026-10-28)
 - **Date:** 2026-10-24 (revised after owner review, same day)
 - **Deciders:** Owner (@rpdouglas), Lily Pad
 - **Stack reference:** `docs/architecture/stack.md` §3, §5, §7
@@ -112,7 +112,7 @@ Functions), `npm run build`, `npm run size` (99.5 KB gzip), `npm run build:funct
 known `@grpc/grpc-js` advisory via `firebase`. A Node 24 deploy is confirmed when staging is created
 (ADR 0001).
 
-## Amendment 1: Lily Pad standard alignment (2026-10-25, Proposed)
+## Amendment 1: Lily Pad standard alignment (2026-10-25, Accepted 2026-10-28)
 
 The Lily Pad standard (`docs/architecture/lilypad-standard-stack.md`) was added after this ADR was
 accepted. Reconciliation (`docs/reviews/2026-10-25-standard-reconciliation.md`) changes the following.

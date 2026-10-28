@@ -10,7 +10,7 @@
 | Docs as code: stack, reviews, ADRs 0001-0005, roadmap, backlog, runbooks, governance | Claude | Done |
 | ADR 0001 (region, ownership, projects) | Owner | Accepted; next: create staging per `runbooks/environments.md` |
 | ADR 0002 (pins, Functions package, Node 24) | Owner | Accepted |
-| Add the Lily Pad standard and reconcile (pnpm, guardrails, runbooks, CI pinning) | Claude | Done in this PR; accept ADR 0002 amendment 1 and ADR 0005 |
+| Add the Lily Pad standard and reconcile (pnpm, guardrails, runbooks, CI pinning) | Claude | Done; ADR 0002 amendment 1 and ADR 0005 accepted |
 | Answer §9 open items (QuickBooks product, DNS, French-first items) | Owner | To do |
 | Add the two feature specs to `docs/projects/` | Owner | To do |
 | Branch protection on `main` per ADR 0005 (PR required, "CI passed", up to date, 0 approvals while solo) | Owner | To do |
