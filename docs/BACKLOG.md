@@ -27,7 +27,7 @@ reconciliation (`reviews/2026-10-25-standard-reconciliation.md`).
 - **2026-11-04:** merge Renovate's Biome 2.6.x PR (restores Markdown/YAML checks; run `biome migrate`
   for the `useTailwindSortedClasses` rename and accept the class-order changes). See ADR 0002.
 - Remove each `minimumReleaseAgeExclude` entry once it is 14 days old (dates in ADR 0002 amendment 1):
-  `zod@4.6.6` 10-25, `qs@6.16.1` 10-28, `fast-uri@3.1.9` 11-02, `body-parser@2.4.0` 11-05.
+  `fast-uri@3.1.9` 11-02, `body-parser@2.4.0` 11-05.
 
 ## Later
 

@@ -88,9 +88,16 @@ docs/                Docs as code: governance, ADRs, roadmap, backlog, specs, pe
 - **Region** is `northamerica-northeast1`, set once in `shared/config.ts`. Never hardcode another.
 - **Security rules:** deny by default. Access is by the `role` custom claim only. Rules cannot hide
   fields, so restricted data goes in separate documents. Every rules change needs allow and deny tests.
-- **Never deploy.** Do not run `firebase deploy`, `firebase login`, create Firebase projects, or touch
-  real projects. Deploys go through GitHub Actions after alias verification. The Firebase MCP server
-  (`.mcp.json`) is for the emulators and staging only.
+- **Deploys only through CI.** Never run `firebase deploy` or `firebase login`, create Firebase
+  projects, or hold project credentials in a session. When asked, an agent may **trigger** the GitHub
+  Actions deploy workflows (ADR 0004): staging runs at once; production waits for the owner's
+  approval in the protected `production` environment. Report the run link and its result.
+- **Firebase MCP** (`.mcp.json`) is limited to docs, metadata and rules validation. Its deploy, write,
+  login and data-read tools are denied in `.claude/settings.json`; when firebase-tools is upgraded,
+  check for new write or data tools and deny them too.
+- **Agent skills from packages** (pnpm `permissions` in `pnpm-workspace.yaml`) are linked into
+  `.claude/skills/`. They are reference material; where one conflicts with this file (e.g. it says
+  `npm install`), this file wins.
 - **Data shapes** are Zod schemas in `shared/schemas/` (cross-boundary) or
   `src/features/<feature>/schemas` (app-only); parse at every boundary.
 - **Live reads** use `useLiveDocument` / `useLiveQuery` in `src/lib/firestore.ts`. TanStack Query is

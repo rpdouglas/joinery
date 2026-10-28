@@ -134,10 +134,10 @@ Everything not listed stands.
 
     | Package | Package file | Fixes | Turns 14 days |
     |---|---|---|---|
-    | `zod@4.6.6` | both | GHSA-mrhx-c7xc-m3w5 (high) | 2026-10-25 |
+    | `zod@4.6.6` | both | GHSA-mrhx-c7xc-m3w5 (high) | 2026-10-25 (removed 2026-10-28) |
     | `fast-uri@3.1.9` | root (via `ajv`) | GHSA-w74x-v6f9-j3xg and three others (moderate/low) | 2026-11-02 |
     | `body-parser@2.4.0` | functions (via `firebase-functions` > `express`) | GHSA-27r3-jxmh-p828 (high) | 2026-11-05 |
-    | `qs@6.16.1` | functions | Required by `body-parser@2.4.0` | 2026-10-28 |
+    | `qs@6.16.1` | functions | Required by `body-parser@2.4.0` | 2026-10-28 (removed 2026-10-28) |
 
   - **Trade-off found:** pnpm applies the age rule to transitive dependencies too, so it resolved
     *older, vulnerable* versions where the fix is newer than 14 days (npm's lockfile had picked the
@@ -147,6 +147,9 @@ Everything not listed stands.
   - `allowBuilds` denies the reviewed build scripts (`@firebase/util`, `protobufjs`, `re2`,
     `esbuild`); an unreviewed build script fails the install.
   - `saveExact: true` replaces `.npmrc` `save-exact`.
+  - `permissions` records what packages may do beyond installing. Agent skills shipped by packages
+    are denied unless approved after reading them; approved: `@tanstack/router-plugin` (owner
+    decision, 2026-10-28). pnpm links approved skills into `.claude/skills/` (git-ignored).
 - **Verify at staging:** Google's Node buildpack runs pnpm when `pnpm-lock.yaml` is present; this
   was not confirmed specifically for `firebase deploy`. If the first staging Functions deploy fails
   on it, fall back to a generated `package-lock.json` for `functions/` only and record it here.
