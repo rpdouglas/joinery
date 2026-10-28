@@ -122,7 +122,10 @@ Everything not listed stands.
 `npm ci` and `allowScripts` parts of decisions 2–4.
 
 - `packageManager: pnpm@12.12.1` in both `package.json` files (newest pnpm at least 14 days old);
-  Corepack provides it. `engines.pnpm` is set too, which the Cloud Functions Node buildpack reads.
+  `engines.pnpm` is set too, which the Cloud Functions Node buildpack reads. pnpm is installed with
+  `npm install --global <packageManager>` (CI, Codespace); any older pnpm switches itself to this
+  version. Corepack is **not** used: pnpm 12 ships as native per-platform binaries that Corepack
+  can't run (found on the first CI run, 2026-10-28).
 - Root and `functions/` each have their own `pnpm-lock.yaml`; neither is a workspace. Install:
   `pnpm install --frozen-lockfile && pnpm --dir functions install --frozen-lockfile`.
 - pnpm 12 reads settings only from `pnpm-workspace.yaml`, so each package has one **without** a

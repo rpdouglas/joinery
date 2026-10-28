@@ -9,7 +9,7 @@
     "5173": { "label": "Vite" },
     "4000": { "label": "Emulator UI" }
   },
-  "postCreateCommand": "corepack enable && pnpm install --frozen-lockfile && pnpm --dir functions install --frozen-lockfile && pnpm exec playwright install --with-deps chromium",
+  "postCreateCommand": "npm install --global \"$(node -p \"require('./package.json').packageManager\")\" && pnpm install --frozen-lockfile && pnpm --dir functions install --frozen-lockfile && pnpm exec playwright install --with-deps chromium",
   "customizations": {
     "vscode": {
       "extensions": [

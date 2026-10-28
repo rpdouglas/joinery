@@ -13,7 +13,7 @@ Identity Platform) in `northamerica-northeast1`. Built to the
 
 ```bash
 nvm use            # Node 24
-corepack enable    # provides the pinned pnpm from package.json
+npm install --global "$(node -p "require('./package.json').packageManager")"   # pinned pnpm
 pnpm install --frozen-lockfile && pnpm --dir functions install --frozen-lockfile
 cp .env.example .env.local
 pnpm run emulators # terminal 1 (needs Java 21)

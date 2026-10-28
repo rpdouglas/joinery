@@ -14,7 +14,8 @@ permissions:
   contents: read
 
 # Actions are pinned to full commit SHAs (Lily Pad standard §7); Renovate proposes updates.
-# pnpm comes from `packageManager` in package.json via Corepack (bundled with Node 24).
+# pnpm is installed with npm at the version in `packageManager` (package.json). Corepack can't run
+# pnpm 12, which ships as native per-platform binaries (ADR 0002).
 
 jobs:
   changes:
@@ -42,7 +43,10 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
-      - run: corepack enable
+          # pnpm is installed in the next step, so setup-node must not try to cache with it.
+          package-manager-cache: false
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
       - run: pnpm install --frozen-lockfile
       - run: pnpm run lint
 
@@ -57,7 +61,10 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
-      - run: corepack enable
+          # pnpm is installed in the next step, so setup-node must not try to cache with it.
+          package-manager-cache: false
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
       - run: pnpm install --frozen-lockfile
       - run: pnpm --dir functions install --frozen-lockfile
       - run: pnpm run typecheck
@@ -79,11 +86,13 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
+          package-manager-cache: false
       - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
           distribution: temurin
           java-version: "21"
-      - run: corepack enable
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
       - run: pnpm install --frozen-lockfile
       - run: pnpm run test:rules
 
@@ -98,7 +107,10 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
-      - run: corepack enable
+          # pnpm is installed in the next step, so setup-node must not try to cache with it.
+          package-manager-cache: false
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm run test:e2e

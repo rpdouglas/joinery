@@ -28,7 +28,9 @@ Specs live in `docs/projects/`; roles in `docs/personas/`.
 | E2E + accessibility          | `pnpm run test:e2e`                                                       |
 | Build + bundle budget        | `pnpm run build && pnpm run size`                                         |
 
-pnpm comes from `packageManager` in `package.json` (Corepack: `corepack enable`).
+pnpm's version is pinned in `packageManager` (`package.json`). Install it with
+`npm install --global "$(node -p "require('./package.json').packageManager")"`; any other pnpm
+switches to that version automatically. Corepack can't run pnpm 12.
 
 **Definition of done** for any change: lint, typecheck, `pnpm test` and build pass; rules tests
 pass if `firestore.rules` or `storage.rules` changed; e2e passes if UI changed.
