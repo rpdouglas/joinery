@@ -18,15 +18,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: staging
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npm run verify:alias -- staging joinery-staging
-      - run: npm run build
+          # pnpm is installed in the next step, so setup-node must not try to cache with it.
+          package-manager-cache: false
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir functions install --frozen-lockfile
+      - run: pnpm run verify:alias staging joinery-staging
+      - run: pnpm run build
         env:
           VITE_RELEASE_ID: ${{ github.sha }}
           VITE_FIREBASE_PROJECT_ID: joinery-staging
@@ -34,8 +39,8 @@ jobs:
           VITE_FIREBASE_AUTH_DOMAIN: ${{ vars.FIREBASE_AUTH_DOMAIN_STAGING }}
           VITE_FIREBASE_STORAGE_BUCKET: ${{ vars.FIREBASE_STORAGE_BUCKET_STAGING }}
           VITE_FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID_STAGING }}
-      - uses: google-github-actions/auth@v3
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
         with:
           workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER_STAGING }}
           service_account: ${{ vars.GCP_DEPLOY_SA_STAGING }}
-      - run: npx firebase deploy --project staging --non-interactive --message "release ${{ github.sha }}"
+      - run: pnpm exec firebase deploy --project staging --non-interactive --message "release ${{ github.sha }}"

@@ -18,7 +18,8 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: true,
+    // Maps are for Sentry upload only; firebase.json keeps them off Hosting.
+    sourcemap: 'hidden',
   },
   test: {
     environment: 'jsdom',

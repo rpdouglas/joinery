@@ -8,6 +8,10 @@
 
 1. **Staging** is a full project and the only deploy target for PRs (manual `deploy-staging.yml`
    for now; PR previews later). Every deploy runs `scripts/verify-firebase-alias.mjs` first.
+   **Who deploys:** the owner or a coding agent may trigger the deploy workflows (owner decision,
+   2026-10-28). Agents trigger them through the GitHub Actions API and never hold Firebase or GCP
+   credentials. The `staging` environment has no reviewers; the `production` environment requires
+   the owner's approval, so an agent can start a production deploy but not complete one.
 2. **WIF** per environment: one deploy service account each, with the narrowest roles that deploy
    Hosting, Functions, rules and indexes. Deploy calls `firebase-tools` directly, so the Hosting
    preview action isn't needed for WIF.

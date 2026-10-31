@@ -24,3 +24,27 @@ production is created at the pilot (ADR 0001) by repeating these steps with the 
 10. Run **Deploy staging** from Actions. Check that the alias verification passes, the site loads,
     and `ping` responds for an owner.
 11. Record the checks from ADR 0001 "Verification" in the PR that adds the staging project config.
+
+## Aliases, config and identities
+
+- Aliases live in `.firebaserc` (`staging`, `prod`, and `dev` only if needed). Scripts and workflows
+  use aliases, never raw project IDs, and `scripts/verify-firebase-alias.mjs` checks the alias
+  against the expected ID before every deploy.
+- Each environment has its own web config (GitHub repository variables with an `_STAGING` / `_PROD`
+  suffix), its own secrets in Secret Manager, its own deploy identity (WIF + service account), and
+  its own Sentry environment and email-provider keys.
+- PR previews deploy to **staging** only and never hold production config.
+
+## Adding the production environment (at the pilot)
+
+Repeat the steps above with `joinery-prod` (fallback `artisan-joinery-prod`), a production budget,
+the GitHub environment `production` with required reviewers, PITR and weekly backups
+(`firestore-restore.md`), and App Check enforcement.
+
+## Teardown
+
+1. Disable the deploy workflow's environment in GitHub and delete its repository variables.
+2. Delete the WIF provider and deploy service account.
+3. Export anything the client must keep, then shut down the Firebase/GCP project (30-day recovery
+   window applies).
+4. Remove the alias from `.firebaserc` and update ADR 0001's project table in the same PR.

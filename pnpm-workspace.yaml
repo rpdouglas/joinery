@@ -1,0 +1,21 @@
+# pnpm settings for a single package (no `packages:` list, so this is not a workspace).
+# pnpm 12 reads its settings only from this file. See ADR 0002.
+
+# Exact pins, and nothing newer than 14 days (20160 minutes) is ever resolved.
+saveExact: true
+minimumReleaseAge: 20160
+# Security exceptions only, version-specific, each named in ADR 0002. Remove once 14 days old.
+minimumReleaseAgeExclude:
+  - fast-uri@3.1.9 # GHSA-w74x-v6f9-j3xg and others, via ajv
+
+# Dependency build scripts are denied unless reviewed. An unreviewed one fails the install.
+allowBuilds:
+  "@firebase/util": false
+  protobufjs: false
+  re2: false
+  esbuild: false
+# What dependencies may do beyond installing. Agent skills are linked into .claude/skills/
+# (git-ignored); approve only after reading the package's SKILL.md. AGENTS.md wins on conflicts.
+permissions:
+  '@tanstack/router-plugin':
+    skills: true

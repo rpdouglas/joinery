@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "main": "lib/index.js",
+  "packageManager": "pnpm@12.12.1",
   "engines": {
-    "node": "24"
+    "node": "24",
+    "pnpm": "12.12.1"
   },
   "scripts": {
     "build": "node build.mjs"
@@ -16,10 +18,5 @@
     "firebase-admin": "14.5.0",
     "firebase-functions": "7.4.0",
     "zod": "4.6.6"
-  },
-  "allowScripts": {
-    "@firebase/util": false,
-    "protobufjs": false,
-    "esbuild": false
   }
 }

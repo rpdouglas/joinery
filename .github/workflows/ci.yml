@@ -13,14 +13,19 @@ concurrency:
 permissions:
   contents: read
 
+# Actions are pinned to full commit SHAs (Lily Pad standard §7); Renovate proposes updates.
+# pnpm is installed with npm at the version in `packageManager` (package.json). Corepack can't run
+# pnpm 12, which ships as native per-platform binaries (ADR 0002).
+
 jobs:
   changes:
     name: Detect changes
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       code: ${{ steps.filter.outputs.code }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 0
       - id: filter
@@ -32,69 +37,84 @@ jobs:
   lint:
     name: Lint and format
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
+          # pnpm is installed in the next step, so setup-node must not try to cache with it.
+          package-manager-cache: false
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
 
   check:
     name: Typecheck, unit tests, build
     needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npm ci --prefix functions
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
+          # pnpm is installed in the next step, so setup-node must not try to cache with it.
+          package-manager-cache: false
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir functions install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm test
+      - run: pnpm run build
         env:
           VITE_RELEASE_ID: ${{ github.sha }}
-      - run: npm run size
-      - run: npm run build:functions
+      - run: pnpm run size
+      - run: pnpm run build:functions
 
   rules:
     name: Security rules tests (emulator)
     needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - uses: actions/setup-java@v5
+          package-manager-cache: false
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
           distribution: temurin
           java-version: "21"
-      - run: npm ci
-      - run: npm run test:rules
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test:rules
 
   e2e:
     name: Playwright + axe
     needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
-      - uses: actions/upload-artifact@v5
+          # pnpm is installed in the next step, so setup-node must not try to cache with it.
+          package-manager-cache: false
+      - name: Install pnpm (version from packageManager)
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm run test:e2e
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         if: failure()
         with:
           name: playwright-report
@@ -108,6 +128,7 @@ jobs:
     if: always()
     needs: [changes, lint, check, rules, e2e]
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Check job results
         env:
